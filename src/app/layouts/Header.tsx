@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { Menu } from "lucide-react";
 import { UserMenu } from "./UserMenu";
+import EnvModeToggle from "../../components/theme/EnvModeToggle";
 
 const routeTitles: Record<string, string> = {
   "/dashboard": "Dashboard",
@@ -30,7 +31,7 @@ export function Header({ onMenuClick }: { onMenuClick: () => void }) {
       </div>
 
       <div className="flex items-center gap-3">
-        {/* Add search/notifications here later */}
+        <EnvModeToggle />
         <UserMenu />
       </div>
     </header>

@@ -2,21 +2,34 @@ import { NavLink } from "react-router-dom";
 import { cn } from "../../utils/cn";
 import {
   Home,
-  Users,
   CreditCard,
   Settings,
   ChevronLeft,
   ChevronRight,
+  ShieldCheck,
+  FileText,
+  Scale,
+  LifeBuoy,
+  Wallet,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import * as Tooltip from "@radix-ui/react-tooltip";
 
-const navItems = [
-  { label: "Dashboard", icon: Home, href: "/dashboard" },
-  { label: "Merchants", icon: Users, href: "/merchants" },
-  { label: "Transactions", icon: CreditCard, href: "/transactions" },
-  { label: "Settings", icon: Settings, href: "/settings" },
-];
+// Static base items; compliance will be conditionally inserted
+type NavItem = { label: string; icon: React.ComponentType<{ className?: string }>; href: string };
+function buildNavItems(showCompliance: boolean): NavItem[] {
+  const items: (NavItem | false)[] = [
+    { label: "Dashboard", icon: Home, href: "/dashboard" },
+    showCompliance && { label: "Compliance", icon: ShieldCheck, href: "/compliance" },
+    { label: "Settlements", icon: Wallet, href: "/settlements" },
+    { label: "Transactions", icon: CreditCard, href: "/transactions" },
+    { label: "Invoices", icon: FileText, href: "/invoices" },
+    { label: "Disputes", icon: Scale, href: "/disputes" },
+    { label: "Settings", icon: Settings, href: "/settings" },
+    { label: "Help & Support", icon: LifeBuoy, href: "/support" },
+  ];
+  return items.filter(Boolean) as NavItem[];
+}
 
 export function SidebarNav({
   onClose,
@@ -38,6 +51,10 @@ export function SidebarNav({
     setCollapsed(newVal);
     localStorage.setItem("sidebar:collapsed", String(newVal));
   };
+
+  // Placeholder: read compliance progress from localStorage (will be replaced by global store/react-query later)
+  const complianceComplete = localStorage.getItem("compliance:progress") === "6";
+  const navItems = buildNavItems(!complianceComplete);
 
   return (
     <div

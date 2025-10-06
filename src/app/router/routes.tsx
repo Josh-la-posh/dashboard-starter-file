@@ -15,6 +15,7 @@ import WebhooksPage from "../../features/settings/pages/WebhooksPage";
 import UserManagementPage from "../../features/settings/pages/UserPage";
 import AuditLogsPage from "../../features/settings/pages/AuditLogsPage";
 import BillingPage from "../../features/settings/pages/BillingPage";
+import CompliancePage from "../../features/compliance/pages/CompliancePage";
 
 const Login = React.lazy(() => import("../../features/auth/pages/Login"));
 const Register = React.lazy(() => import("../../features/auth/pages/Register"));
@@ -69,6 +70,13 @@ export const router = createBrowserRouter([
           { path: "credentials", element: <MerchantCredentials /> }
         ]
       },      
+      { path: "compliance", element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <AppShell>
+              <CompliancePage />
+            </AppShell>
+          </Suspense>
+        ) },
       { path: "transactions", element: (
           <Suspense fallback={<LoadingFallback />}>
             <AppShell>
