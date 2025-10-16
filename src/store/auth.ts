@@ -7,20 +7,23 @@ const USE_REFRESH_TOKEN = import.meta.env.VITE_USE_REFRESH_TOKEN === "true";
 
 type User = { id: string; email: string; name?: string; emailVerified?: boolean; role?: string };
 
+type ComplianceStatus = 'pending' | 'under_review' | 'approved' | 'rejected' | null;
 type State = {
   user: User | null;
   accessToken: string | null;
   isAuthenticated: boolean;
   hydrating: boolean;
+  complianceStatus: ComplianceStatus;
 };
 type Actions = {
-  setSession: (payload: { user: User; accessToken: string }) => void;
+  setSession: (payload: { user: User; accessToken: string; complianceStatus?: ComplianceStatus }) => void;
   setAccessToken: (token: string | null) => void;
   logout: () => void;
   consumeIntendedRoute: () => string | null;
   hydrateFromRefresh?: () => Promise<void>;
   isTokenExpired: () => boolean;
   setHydrating: (val: boolean) => void;
+  setComplianceStatus: (status: ComplianceStatus) => void;
 };
 
 function isExpired(token: string): boolean {
@@ -36,13 +39,14 @@ function isExpired(token: string): boolean {
 export const useAuthStore = create<State & Actions>()(
   persist(
     (set, get) => ({
-      user: null,
+  user: null,
       accessToken: null,
       isAuthenticated: false,
       hydrating: true,
+  complianceStatus: null,
 
-      setSession: ({ user, accessToken }) => {
-        set({ user, accessToken, isAuthenticated: true });
+      setSession: ({ user, accessToken, complianceStatus }) => {
+        set({ user, accessToken, isAuthenticated: true, complianceStatus: complianceStatus ?? null });
         if (USE_REFRESH_TOKEN) {
           scheduleRefreshFromToken(accessToken).catch(() => {});
         }
@@ -57,8 +61,9 @@ export const useAuthStore = create<State & Actions>()(
 
       logout: () => {
         if (USE_REFRESH_TOKEN) clearScheduledRefresh();
-        set({ user: null, accessToken: null, isAuthenticated: false });
+        set({ user: null, accessToken: null, isAuthenticated: false, complianceStatus: null });
       },
+  setComplianceStatus: (status) => set({ complianceStatus: status }),
 
       consumeIntendedRoute: () => popIntendedRoute(),
 

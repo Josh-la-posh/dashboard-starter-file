@@ -17,7 +17,7 @@ export function UserMenu() {
           <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
             <User className="h-4 w-4 text-primary" />
           </div>
-          <span className="hidden sm:block text-sm font-medium">
+          <span className="hidden lg:block text-sm font-medium">
             {user?.email || "Account"}
           </span>
         </Button>

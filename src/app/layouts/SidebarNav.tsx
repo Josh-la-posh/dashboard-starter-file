@@ -13,6 +13,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useAuthStore } from "../../store/auth";
 import * as Tooltip from "@radix-ui/react-tooltip";
 
 // Static base items; compliance will be conditionally inserted
@@ -53,8 +54,9 @@ export function SidebarNav({
   };
 
   // Placeholder: read compliance progress from localStorage (will be replaced by global store/react-query later)
-  const complianceComplete = localStorage.getItem("compliance:progress") === "6";
-  const navItems = buildNavItems(!complianceComplete);
+  const complianceStatus = useAuthStore(s=>s.complianceStatus);
+  const showCompliance = complianceStatus !== 'approved';
+  const navItems = buildNavItems(showCompliance);
 
   return (
     <div

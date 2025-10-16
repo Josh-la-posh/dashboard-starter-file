@@ -12,10 +12,10 @@ type DraftActions = {
   setStepIndex: (index: number) => void;
   markStepComplete: (index: number, totalSteps: number) => void; // increments progress if appropriate
   reset: () => void;
-  markSubmitted: () => void; // sets progress to 6 (complete)
+  markSubmitted: () => void; // sets progress to 7 (complete)
 };
 
-// Progress model: progress represents number of completed steps (0..6). We'll consider 6 = fully complete.
+// Progress model: progress represents number of completed steps (0..7). We'll consider 7 = fully complete.
 
 export const useComplianceDraftStore = create<DraftState & DraftActions>()(
   persist(
@@ -34,7 +34,7 @@ export const useComplianceDraftStore = create<DraftState & DraftActions>()(
         set({ draft: { ...draft, progress: newProgress } });
       },
       reset: () => set({ draft: emptyComplianceDraft() }),
-      markSubmitted: () => set({ draft: { ...get().draft, progress: 6 } }),
+  markSubmitted: () => set({ draft: { ...get().draft, progress: 7 } }),
     }),
     {
       name: 'compliance-draft',

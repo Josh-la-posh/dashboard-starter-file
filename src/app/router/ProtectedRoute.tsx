@@ -14,7 +14,8 @@ export default function ProtectedRoute({ roles }: { roles?: string[] }) {
   const validSession = accessToken && !isTokenExpired();
   const userWithMerchants = user as unknown as { merchants?: Merchant[] } | null;
   const merchantCode = userWithMerchants?.merchants?.[0]?.merchantCode;
-  const { data: complianceData, isLoading: loadingCompliance } = useCompliance(merchantCode);
+  const isComplianceRoute = loc.pathname.startsWith('/compliance');
+  const { data: complianceData, isLoading: loadingCompliance } = useCompliance(!isComplianceRoute ? merchantCode : undefined);
   const hasRedirectedRef = useRef(false);
 
   useEffect(() => {
@@ -37,14 +38,14 @@ export default function ProtectedRoute({ roles }: { roles?: string[] }) {
 
   if (merchantCode && loadingCompliance) return <FullPageLoader />;
 
-  if (merchantCode && complianceData && complianceData.progress !== 6 && loc.pathname !== '/compliance') {
+  if (merchantCode && complianceData && complianceData.progress !== 8 && loc.pathname !== '/compliance') {
     if (!hasRedirectedRef.current) {
       hasRedirectedRef.current = true;
       return <Navigate to="/compliance" replace />;
     }
   }
 
-  if (loc.pathname === '/compliance' && complianceData?.progress === 6) {
+  if (loc.pathname === '/compliance' && complianceData?.progress === 8) {
     return <Navigate to="/dashboard" replace />;
   }
 

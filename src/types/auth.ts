@@ -55,6 +55,7 @@ export type LoginResponseData = {
   aggregator: Aggregator;
   merchants: Merchant[];
   user: LoginUser;
+  complianceStatus?: 'pending' | 'under_review' | 'approved' | 'rejected';
 };
 
 export type LoginApiResponse = ApiEnvelope<LoginResponseData>;

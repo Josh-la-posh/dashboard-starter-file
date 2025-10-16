@@ -3,21 +3,26 @@ import { login, register, requestPasswordReset, verifyEmail, fetchBrandColor, sa
 import { useAuthStore } from "../../store/auth";
 import { queryClient } from "../../lib/queryClient";
 import { useThemeStore } from "../../store/theme";
+import { useMerchantSelectionStore } from "../../store/merchantSelection";
 import type { LoginApiResponse, SetPasswordWithTokenPayload } from "../../types/auth";
 import type { AppError } from "../../lib/error";
 import { toast } from "sonner";
 
 export function useLogin() {
   const setSession = useAuthStore(s => s.setSession);
+  const setMerchants = useMerchantSelectionStore(s=>s.setMerchants);
   // const setPrimaryHsl = useThemeStore(s => s.setPrimaryHsl);
 
   return useMutation({
     mutationFn: login,
     onSuccess: async (res: LoginApiResponse) => {
-      const { accessToken, user } = res.responseData;
+  const { accessToken, user, merchants, complianceStatus } = res.responseData;
       setSession({ user: {
         id: user.id, email: user.email, name: `${user.firstName} ${user.lastName}`, emailVerified: user.isEmailConfirmed
-      }, accessToken });
+      }, accessToken, complianceStatus });
+      if (Array.isArray(merchants)) {
+        setMerchants(merchants);
+      }
       const color = await fetchBrandColor().catch(() => ({ hsl: null }));
       if (color?.hsl) useThemeStore.getState().setPrimaryHsl(color.hsl);
       await queryClient.invalidateQueries();

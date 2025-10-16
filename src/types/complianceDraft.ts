@@ -9,6 +9,8 @@ export type ComplianceOwner = {
   verificationType: string; // nin, passport, etc.
   dob: string; // ISO date
   nationality: string;
+  role?: string; // added per Form 4 requirements
+  bvn?: string; // added per Form 4 requirements
 };
 
 export type ComplianceDraft = {
@@ -66,6 +68,13 @@ export type ComplianceDraft = {
   residentialAddress: string;
   nin: string;
 
+  // Representative (Form 4) fields
+  firstName?: string;
+  lastName?: string;
+  mobile?: string;
+  occupation?: string;
+  percent_of_business?: number; // alt naming if needed by API
+
   // Uploaded document placeholders (store file names or base64 for now)
   certificate_of_incorporation?: string;
   status_report?: string;
@@ -79,6 +88,7 @@ export type ComplianceDraft = {
   prohibited_activities_declaration?: string;
   bricks_and_mortar_agreement?: string;
   web_merchants_agreement?: string;
+  memorandum_and_articles?: string; // Memorandum and Articles of Association
 
   // Arrays
   owners: ComplianceOwner[];
@@ -129,5 +139,11 @@ export const emptyComplianceDraft = (): ComplianceDraft => ({
   identityNumber: '',
   residentialAddress: '',
   nin: '',
+  firstName: '',
+  lastName: '',
+  mobile: '',
+  occupation: '',
+  percent_of_business: undefined,
   owners: [],
+  memorandum_and_articles: undefined,
 });

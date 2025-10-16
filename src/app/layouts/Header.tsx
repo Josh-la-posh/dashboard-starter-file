@@ -3,6 +3,7 @@ import { Button } from "../../components/ui/button";
 import { Menu } from "lucide-react";
 import { UserMenu } from "./UserMenu";
 import EnvModeToggle from "../../components/theme/EnvModeToggle";
+import { MerchantDropdown } from "../../components/system/MerchantDropdown";
 
 const routeTitles: Record<string, string> = {
   "/dashboard": "Dashboard",
@@ -30,8 +31,9 @@ export function Header({ onMenuClick }: { onMenuClick: () => void }) {
         <h1 className="text-base lg:text-lg font-semibold">{title}</h1>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <EnvModeToggle />
+        <MerchantDropdown />
         <UserMenu />
       </div>
     </header>

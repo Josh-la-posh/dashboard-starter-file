@@ -15,7 +15,7 @@ import WebhooksPage from "../../features/settings/pages/WebhooksPage";
 import UserManagementPage from "../../features/settings/pages/UserPage";
 import AuditLogsPage from "../../features/settings/pages/AuditLogsPage";
 import BillingPage from "../../features/settings/pages/BillingPage";
-import CompliancePage from "../../features/compliance/pages/CompliancePage";
+import ComplianceRouteDecider from "../../features/compliance/components/ComplianceRouteDecider";
 
 const Login = React.lazy(() => import("../../features/auth/pages/Login"));
 const Register = React.lazy(() => import("../../features/auth/pages/Register"));
@@ -24,7 +24,13 @@ const VerifyEmail = React.lazy(() => import("../../features/auth/pages/VerifyEma
 const RegisterSuccess = React.lazy(() => import("../../features/auth/pages/RegisterSuccess"));
 const ResetPassword = React.lazy(() => import("../../features/auth/pages/ResetPassword"));
 
-const Dashboard = React.lazy(() => Promise.resolve({ default: () => <div className="p-6">Welcome to Dashboard</div> }));
+import ComplianceBanner from "../../components/system/ComplianceBanner";
+const Dashboard = React.lazy(() => Promise.resolve({ default: () => (
+  <div className="p-6">
+    <ComplianceBanner />
+    <div>Welcome to Dashboard</div>
+  </div>
+) }));
 
 const MerchantProfile = React.lazy(() => Promise.resolve({ default: () => <div>Profile Content</div> }));
 const MerchantDocuments = React.lazy(() => Promise.resolve({ default: () => <div>Documents Content</div> }));
@@ -73,7 +79,7 @@ export const router = createBrowserRouter([
       { path: "compliance", element: (
           <Suspense fallback={<LoadingFallback />}>
             <AppShell>
-              <CompliancePage />
+              <ComplianceRouteDecider />
             </AppShell>
           </Suspense>
         ) },

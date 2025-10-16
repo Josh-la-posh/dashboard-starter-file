@@ -19,8 +19,8 @@ export const api2 = axios.create({
 });
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_MERCHANT_BASE_URL,
-  withCredentials: true,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  // withCredentials: true,
 });
 
 // Attach token
